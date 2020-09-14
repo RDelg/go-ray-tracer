@@ -1,3 +1,3 @@
-module github.com/RDelg/go-ray-tracer/space
+module github.com/RDelg/go-ray-tracer
 
 go 1.15
