@@ -1,4 +1,4 @@
-package space
+package tuples
 
 // Tuple4DFloat is a 3D arr
 type Tuple4DFloat struct {

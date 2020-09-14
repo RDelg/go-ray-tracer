@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 
-	"github.com/RDelg/go-ray-tracer/space/space"
+	tuples "github.com/RDelg/go-ray-tracer/features"
 )
 
 func main() {
 
-	s := space.NewPoint3D(0.1, 0.2, 0.3)
+	s := tuples.NewPoint3D(0.1, 0.2, 0.3)
 
 	fmt.Println(s)
 }
