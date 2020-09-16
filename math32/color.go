@@ -32,13 +32,13 @@ func (c *Color) SetRGB(r, g, b float32) *Color {
 
 // SetByName sets the color RGB components from the
 // specified standard web color name
-func (c *Color) SetByName(name string) *Color {
+func (c *Color) SetByName(name string) (*Color, bool) {
 
 	color, ok := mapColorNames[strings.ToLower(name)]
 	if ok {
 		*c = color
 	}
-	return c
+	return c, ok
 }
 
 // Add adds to each RGB component of this color the correspondent component of other color
@@ -61,9 +61,9 @@ func (c *Color) AddScalar(s float32) *Color {
 	return c
 }
 
-// Multiply multiplies each RGB component of this color by other
+// Mult multiplies each RGB component of this color by other
 // Returns pointer to this updated color
-func (c *Color) Multiply(other *Color) *Color {
+func (c *Color) Mult(other *Color) *Color {
 
 	c.R *= other.R
 	c.G *= other.G
@@ -71,9 +71,9 @@ func (c *Color) Multiply(other *Color) *Color {
 	return c
 }
 
-// MultiplyScalar multiplies the specified scalar value to each RGB component of this color
+// MultScalar multiplies the specified scalar value to each RGB component of this color
 // Returns pointer to this updated color
-func (c *Color) MultiplyScalar(s float32) *Color {
+func (c *Color) MultScalar(s float32) *Color {
 
 	c.R *= s
 	c.G *= s
