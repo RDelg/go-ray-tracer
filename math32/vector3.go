@@ -7,57 +7,73 @@ type Vector3 struct {
 	X, Y, Z float32
 }
 
-// Vector3FromArray creates a Vector3 from an array of 3 values
+// Vector3FromArray creates a Vector3 from a float array of lenth 3
 func Vector3FromArray(array [3]float32) *Vector3 {
 	return &Vector3{array[0], array[1], array[2]}
 }
 
-// AsArray returs the Vector3 values as an array
-func (vA *Vector3) AsArray() [3]float32 {
-	return [3]float32{vA.X, vA.Y, vA.Z}
+// AsArray returs the Vector3 values as a float array of lenth 3
+func (vector *Vector3) AsArray() [3]float32 {
+	return [3]float32{vector.X, vector.Y, vector.Z}
 }
 
-// Neg returns a reference to a new Vector3 with values (-1)* {X, Y, Z}
-func (vA *Vector3) Neg() *Vector3 {
-	return &Vector3{-1.0 * vA.X, -1.0 * vA.Y, -1.0 * vA.Z}
+// Neg multiplies each vector value by -1
+// Returns a pointer to the updated vector
+func (vector *Vector3) Neg() *Vector3 {
+	vector.X *= -1.0
+	vector.Y *= -1.0
+	vector.Z *= -1.0
+	return vector
 }
 
-// Add returns a reference to a new Vector3 with the sum of the two Vector3
-func (vA *Vector3) Add(vb *Vector3) *Vector3 {
-	return &Vector3{vA.X + vb.X, vA.Y + vb.Y, vA.Z + vb.Z}
+// Add adds the values of other to vector
+// Returns a pointer to the updated vector
+func (vector *Vector3) Add(other *Vector3) *Vector3 {
+	return &Vector3{vector.X + other.X, vector.Y + other.Y, vector.Z + other.Z}
 }
 
-// Substract returns a reference to a new Vector3 with the substraction of the two Vector3
-func (vA *Vector3) Substract(vb *Vector3) *Vector3 {
-	return vA.Add(vb.Neg())
+// Substract substracts the values of other to vector
+// Returns a pointer to the updated vector
+func (vector *Vector3) Substract(other *Vector3) *Vector3 {
+	return vector.Add(other.Neg())
 }
 
-// MultScalar returns a reference to a new Vector3 with the multiplication between the Vector3 and the scalar
-func (vA *Vector3) MultScalar(scalar float32) *Vector3 {
-	return &Vector3{scalar * vA.X, scalar * vA.Y, scalar * vA.Z}
+// MultScalar multiplies the values of vector by scalar
+// Returns a pointer to the updated vector
+func (vector *Vector3) MultScalar(scalar float32) *Vector3 {
+	vector.X *= scalar
+	vector.Y *= scalar
+	vector.Z *= scalar
+	return vector
 }
 
-// DivideScalar returns a reference to a new Vector3 with the division between the Vector3 and the scalar
-func (vA *Vector3) DivideScalar(scalar float32) *Vector3 {
-	return &Vector3{vA.X / scalar, vA.Y / scalar, vA.Z / scalar}
+// DivideScalar divides the values of vector by scalar
+// Returns a pointer to the updated vector
+func (vector *Vector3) DivideScalar(scalar float32) *Vector3 {
+	vector.X /= scalar
+	vector.Y /= scalar
+	vector.Z /= scalar
+	return vector
 }
 
 // Magnitude returns the euclidean norm of the vector
-func (vA *Vector3) Magnitude() float32 {
-	return float32(math.Sqrt(float64(vA.X*vA.X + vA.Y*vA.Y + vA.Z*vA.Z)))
+func (vector *Vector3) Magnitude() float32 {
+	return float32(math.Sqrt(float64(vector.X*vector.X + vector.Y*vector.Y + vector.Z*vector.Z)))
 }
 
-// Normalize returns a reference to a new Vector3 with its values normalized using the euclidean norm
-func (vA *Vector3) Normalize() *Vector3 {
-	return vA.DivideScalar(vA.Magnitude())
+// Normalize applies a normalization to the vector using the euclidean norm
+// Returns a pointer to the updated vector
+func (vector *Vector3) Normalize() *Vector3 {
+	return vector.DivideScalar(vector.Magnitude())
 }
 
-// Dot returns the dot product between the two Vector3
-func (vA *Vector3) Dot(vB *Vector3) float32 {
-	return vA.X*vB.X + vA.Y*vB.Y + vA.Z*vB.Z
+// Dot applies the dot product between vector and other
+// Returns a float32 with the result value
+func (vector *Vector3) Dot(other *Vector3) float32 {
+	return vector.X*other.X + vector.Y*other.Y + vector.Z*other.Z
 }
 
-// Cross returns a reference to a new Vector3 containing the cross product between the two Vector3
-func (vA *Vector3) Cross(vB *Vector3) *Vector3 {
-	return &Vector3{vA.Y*vB.Z - vA.Z*vB.Y, vA.Z*vB.X - vA.X*vB.Z, vA.X*vB.Y - vA.Y*vB.X}
+// Cross returns a pointer to a new Vector3 containing the cross product between the two Vector3
+func (vector *Vector3) Cross(other *Vector3) *Vector3 {
+	return &Vector3{vector.Y*other.Z - vector.Z*other.Y, vector.Z*other.X - vector.X*other.Z, vector.X*other.Y - vector.Y*other.X}
 }
