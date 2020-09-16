@@ -1,4 +1,4 @@
-package vector3
+package math32
 
 import (
 	"math"
@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestFromArray(t *testing.T) {
+func TestVector3FromArray(t *testing.T) {
 	type args struct {
 		array [3]float32
 	}
@@ -15,12 +15,12 @@ func TestFromArray(t *testing.T) {
 		args args
 		want *Vector3
 	}{
-		{"FromArray runs correctly", args{[3]float32{0.1, 0.1, 0.1}}, &Vector3{0.1, 0.1, 0.1}},
+		{"Vector3FromArray runs correctly", args{[3]float32{0.1, 0.1, 0.1}}, &Vector3{0.1, 0.1, 0.1}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := FromArray(tt.args.array); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("FromArray() = %v, want %v", got, tt.want)
+			if got := Vector3FromArray(tt.args.array); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Vector3FromArray() = %v, want %v", got, tt.want)
 			}
 		})
 	}

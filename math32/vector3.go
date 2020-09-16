@@ -1,4 +1,4 @@
-package vector3
+package math32
 
 import "math"
 
@@ -7,8 +7,8 @@ type Vector3 struct {
 	X, Y, Z float32
 }
 
-// FromArray creates a Vector3 from an array of 3 values
-func FromArray(array [3]float32) *Vector3 {
+// Vector3FromArray creates a Vector3 from an array of 3 values
+func Vector3FromArray(array [3]float32) *Vector3 {
 	return &Vector3{array[0], array[1], array[2]}
 }
 
