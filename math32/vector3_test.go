@@ -329,3 +329,34 @@ func TestVector3_Cross(t *testing.T) {
 		})
 	}
 }
+
+func TestVector3_SetFromArray(t *testing.T) {
+	type fields struct {
+		X float32
+		Y float32
+		Z float32
+	}
+	type args struct {
+		array [3]float32
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Vector3
+	}{
+		{"SetFromArray runs correctly", fields{}, args{[3]float32{0.1, 0.2, 0.3}}, &Vector3{0.1, 0.2, 0.3}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			vector := &Vector3{
+				X: tt.fields.X,
+				Y: tt.fields.Y,
+				Z: tt.fields.Z,
+			}
+			if got := vector.SetFromArray(tt.args.array); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Vector3.SetFromArray() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

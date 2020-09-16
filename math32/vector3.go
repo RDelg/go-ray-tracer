@@ -17,6 +17,14 @@ func (vector *Vector3) AsArray() [3]float32 {
 	return [3]float32{vector.X, vector.Y, vector.Z}
 }
 
+// SetFromArray returs the Vector3 values as a float array of lenth 3
+func (vector *Vector3) SetFromArray(array [3]float32) *Vector3 {
+	vector.X = array[0]
+	vector.Y = array[1]
+	vector.Z = array[2]
+	return vector
+}
+
 // Neg multiplies each vector value by -1
 // Returns a pointer to the updated vector
 func (vector *Vector3) Neg() *Vector3 {
