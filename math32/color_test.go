@@ -95,3 +95,127 @@ func TestColor_SetByName(t *testing.T) {
 		})
 	}
 }
+
+func TestColor_Add(t *testing.T) {
+	type fields struct {
+		R float32
+		G float32
+		B float32
+	}
+	type args struct {
+		other *Color
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Color
+	}{
+		{"Add adds correctly 01", fields{0.1, 0.2, 0.3}, args{&Color{0.1, 0.2, 0.3}}, &Color{0.2, 0.4, 0.6}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Color{
+				R: tt.fields.R,
+				G: tt.fields.G,
+				B: tt.fields.B,
+			}
+			if got := c.Add(tt.args.other); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Color.Add() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestColor_AddScalar(t *testing.T) {
+	type fields struct {
+		R float32
+		G float32
+		B float32
+	}
+	type args struct {
+		s float32
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Color
+	}{
+		{"AddScalar adds correctly 01", fields{0.1, 0.2, 0.3}, args{0.1}, &Color{0.2, 0.3, 0.4}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Color{
+				R: tt.fields.R,
+				G: tt.fields.G,
+				B: tt.fields.B,
+			}
+			if got := c.AddScalar(tt.args.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Color.AddScalar() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestColor_Mult(t *testing.T) {
+	type fields struct {
+		R float32
+		G float32
+		B float32
+	}
+	type args struct {
+		other *Color
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Color
+	}{
+		{"Mult multiplies correctly 01", fields{0.25, 0.8, 0.3}, args{&Color{0.4, 0.16, 0.16}}, &Color{0.1, 0.128, 0.048}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Color{
+				R: tt.fields.R,
+				G: tt.fields.G,
+				B: tt.fields.B,
+			}
+			if got := c.Mult(tt.args.other); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Color.Mult() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestColor_MultScalar(t *testing.T) {
+	type fields struct {
+		R float32
+		G float32
+		B float32
+	}
+	type args struct {
+		s float32
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Color
+	}{
+		{"Mult multiplies correctly 01", fields{0.25, 0.46, 0.38}, args{0.4}, &Color{0.1, 0.184, 0.152}},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := &Color{
+				R: tt.fields.R,
+				G: tt.fields.G,
+				B: tt.fields.B,
+			}
+			if got := c.MultScalar(tt.args.s); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Color.MultScalar() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
