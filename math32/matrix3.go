@@ -5,20 +5,25 @@ type Matrix3 struct {
 	Values [3][3]float32
 }
 
-// Matrix3Ones returns a pointer to a Matrix3 full of 1s
-func Matrix3Ones() *Matrix3 {
+// NewMatrix3Ones returns a pointer to a new Matrix3 full of 1s
+func NewMatrix3Ones() *Matrix3 {
 	oneVector := [3]float32{1.0, 1.0, 1.0}
 	return &Matrix3{[3][3]float32{oneVector, oneVector, oneVector}}
 }
 
-// Matrix3Zeros returns a pointer to a Matrix3 full of 0s
-func Matrix3Zeros() *Matrix3 {
+// NewMatrix3Zeros returns a pointer to a new Matrix3 full of zeros
+func NewMatrix3Zeros() *Matrix3 {
 	return &Matrix3{}
 }
 
-// Matrix3Identity returns a pointer to a Matrix3 with the identity values
-func Matrix3Identity() *Matrix3 {
-	return &Matrix3{}
+// NewMatrix3Identity returns a pointer to a new Matrix3 containingn the Identity_3 matrix
+func NewMatrix3Identity() *Matrix3 {
+	return &Matrix3{
+		[3][3]float32{
+			[3]float32{1.0, 0.0, 0.0},
+			[3]float32{0.0, 1.0, 0.0},
+			[3]float32{0.0, 0.0, 1.0},
+		}}
 }
 
 // Add adds the other Matrix3 to this one
@@ -32,9 +37,9 @@ func (m *Matrix3) Add(other *Matrix3) *Matrix3 {
 	m.Values[1][1] += other.Values[1][1]
 	m.Values[1][2] += other.Values[1][2]
 
-	m.Values[2][0] += other.Values[0][0]
-	m.Values[2][1] += other.Values[0][1]
-	m.Values[2][2] += other.Values[0][2]
+	m.Values[2][0] += other.Values[2][0]
+	m.Values[2][1] += other.Values[2][1]
+	m.Values[2][2] += other.Values[2][2]
 	return m
 }
 
@@ -88,15 +93,15 @@ func (m *Matrix3) Transpose() *Matrix3 {
 // Determinant return the determinant of the matrix
 func (m *Matrix3) Determinant() float32 {
 	return m.Values[0][0]*m.Values[1][1]*m.Values[2][2] -
-		m.Values[0][0]*m.Values[2][1]*m.Values[0][2] -
-		m.Values[1][0]*m.Values[0][1]*m.Values[2][2] +
-		m.Values[1][0]*m.Values[2][1]*m.Values[0][2] +
-		m.Values[2][0]*m.Values[0][1]*m.Values[1][2] -
-		m.Values[2][0]*m.Values[1][1]*m.Values[0][2]
+		m.Values[0][0]*m.Values[2][1]*m.Values[1][2] -
+		m.Values[0][1]*m.Values[1][0]*m.Values[2][2] +
+		m.Values[0][1]*m.Values[2][0]*m.Values[1][2] +
+		m.Values[0][2]*m.Values[1][0]*m.Values[2][1] -
+		m.Values[0][2]*m.Values[2][0]*m.Values[1][1]
 }
 
 // Equal returns true if the matrices are equal, else return false
-func (m *Matrix3) Equal(other Matrix3) bool {
+func (m *Matrix3) Equal(other *Matrix3) bool {
 	return m.Values[0][0] == other.Values[0][0] &&
 		m.Values[0][1] == other.Values[0][1] &&
 		m.Values[0][2] == other.Values[0][2] &&
@@ -108,25 +113,45 @@ func (m *Matrix3) Equal(other Matrix3) bool {
 		m.Values[2][2] == other.Values[2][2]
 }
 
-// AddVector3 adds a Vector3 to all rows
-func (m *Matrix3) AddVector3(vector Vector3) *Matrix3 {
-	m.Values[0][0] = vector.X
-	m.Values[0][1] = vector.X
-	m.Values[0][2] = vector.X
-	m.Values[1][0] = vector.Y
-	m.Values[1][1] = vector.Y
-	m.Values[1][2] = vector.Y
-	m.Values[2][0] = vector.Z
-	m.Values[2][1] = vector.Z
-	m.Values[2][2] = vector.Z
+// AddVector3 adds a Vector3 to each column if columnWise is true
+// else adds the values to each row
+func (m *Matrix3) AddVector3(vector *Vector3, columnWise bool) *Matrix3 {
+	if columnWise {
+		m.Values[0][0] = vector.X
+		m.Values[0][1] = vector.X
+		m.Values[0][2] = vector.X
+		m.Values[1][0] = vector.Y
+		m.Values[1][1] = vector.Y
+		m.Values[1][2] = vector.Y
+		m.Values[2][0] = vector.Z
+		m.Values[2][1] = vector.Z
+		m.Values[2][2] = vector.Z
+	} else {
+		m.Values[0][0] = vector.X
+		m.Values[1][0] = vector.X
+		m.Values[2][0] = vector.X
+		m.Values[0][1] = vector.Y
+		m.Values[1][1] = vector.Y
+		m.Values[2][1] = vector.Y
+		m.Values[0][2] = vector.Z
+		m.Values[1][2] = vector.Z
+		m.Values[2][2] = vector.Z
+	}
 	return m
 }
 
 // MultVector3 multiplies each row with the vector
-func (m *Matrix3) MultVector3(vector Vector3) *Vector3 {
-	x := m.Values[0][0]*vector.X + m.Values[0][1]*vector.Y + m.Values[0][2]*vector.Z
-	y := m.Values[1][0]*vector.X + m.Values[1][1]*vector.Y + m.Values[1][2]*vector.Z
-	z := m.Values[2][0]*vector.X + m.Values[2][1]*vector.Y + m.Values[2][2]*vector.Z
+func (m *Matrix3) MultVector3(vector *Vector3, columnWise bool) *Vector3 {
+	var x, y, z float32
+	if columnWise {
+		x = m.Values[0][0]*vector.X + m.Values[1][0]*vector.Y + m.Values[2][0]*vector.Z
+		y = m.Values[0][1]*vector.X + m.Values[1][1]*vector.Y + m.Values[2][1]*vector.Z
+		z = m.Values[0][2]*vector.X + m.Values[1][2]*vector.Y + m.Values[2][2]*vector.Z
+	} else {
+		x = m.Values[0][0]*vector.X + m.Values[0][1]*vector.Y + m.Values[0][2]*vector.Z
+		y = m.Values[1][0]*vector.X + m.Values[1][1]*vector.Y + m.Values[1][2]*vector.Z
+		z = m.Values[2][0]*vector.X + m.Values[2][1]*vector.Y + m.Values[2][2]*vector.Z
+	}
 	return &Vector3{x, y, z}
 }
 
