@@ -398,7 +398,7 @@ func TestMatrix3_AddScalar(t *testing.T) {
 		want   *Matrix3
 	}{
 		{
-			"AddScalar runs correctly with column wise false",
+			"AddScalar runs correctly",
 			fields{NewMatrix3Ones().Values},
 			args{2.0},
 			&Matrix3{[3][3]float32{
@@ -434,7 +434,7 @@ func TestMatrix3_MultScalar(t *testing.T) {
 		want   *Matrix3
 	}{
 		{
-			"MultScalar runs correctly with column wise false",
+			"MultScalar runs correctly",
 			fields{NewMatrix3Ones().Values},
 			args{2.0},
 			&Matrix3{[3][3]float32{
@@ -470,7 +470,7 @@ func TestMatrix3_DivScalar(t *testing.T) {
 		want   *Matrix3
 	}{
 		{
-			"DivScalar runs correctly with column wise false",
+			"DivScalar runs correctly",
 			fields{NewMatrix3Ones().Values},
 			args{2.0},
 			&Matrix3{[3][3]float32{
