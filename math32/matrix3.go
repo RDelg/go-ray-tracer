@@ -144,7 +144,7 @@ func (m *Matrix3) AddScalar(scalar float32) *Matrix3 {
 	return m
 }
 
-// MultScalar adds a scalar to each value of the matrix
+// MultScalar multiplies each value of the matrix by the scalar
 func (m *Matrix3) MultScalar(scalar float32) *Matrix3 {
 	m.Values[0][0] *= scalar
 	m.Values[0][1] *= scalar
@@ -158,7 +158,7 @@ func (m *Matrix3) MultScalar(scalar float32) *Matrix3 {
 	return m
 }
 
-// DivScalar adds a scalar to each value of the matrix
+// DivScalar divides each value of the matrix by the scalar
 func (m *Matrix3) DivScalar(scalar float32) *Matrix3 {
 	m.Values[0][0] /= scalar
 	m.Values[0][1] /= scalar
