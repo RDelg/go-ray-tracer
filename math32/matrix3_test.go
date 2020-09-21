@@ -217,7 +217,7 @@ func TestMatrix3_Determinant(t *testing.T) {
 			1.0,
 		},
 		{
-			"Transpose runs correctly",
+			"Determinannt of runs correctly",
 			fields{
 				[3][3]float32{
 					[3]float32{1.0, -1.0, 2.0},
