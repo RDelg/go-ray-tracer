@@ -1,5 +1,10 @@
 package math32
 
+import (
+	"errors"
+	"fmt"
+)
+
 // Matrix4 represents a 3x3 float32 matrix
 type Matrix4 struct {
 	Values [4][4]float32
@@ -143,6 +148,49 @@ func (m *Matrix4) Determinant() float32 {
 		m.Values[0][1]*(m.Values[1][0]*a-m.Values[1][2]*d+m.Values[1][3]*e) +
 		m.Values[0][2]*(m.Values[1][0]*b-m.Values[1][1]*d+m.Values[1][3]*f) -
 		m.Values[0][3]*(m.Values[1][0]*c-m.Values[1][1]*e+m.Values[1][2]*f)
+}
+
+// Inverse returns the inverse of the matrix
+func (m *Matrix4) Inverse() (*Matrix4, error) {
+	det := m.Determinant()
+	if det == 0.0 {
+		return nil, errors.New("The matrix has 0 determinant. Inverse cannot be calculated")
+	}
+	r := m.Cofactor().Transpose().DivScalar(det)
+	return r, nil
+}
+
+// Cofactor returns the cofactor matrix
+func (m *Matrix4) Cofactor() *Matrix4 {
+	r := Matrix4{}
+	for i := 0; i < 4; i++ {
+		for j := 0; j < 4; j++ {
+			x, _ := m.SubMatrix3(i, j)
+			r.Values[i][j] = x.Determinant() * float32((-i-j)%2)
+		}
+	}
+	return &r
+}
+
+// SubMatrix3 returns a Matrix3 ignoring the row and column indexes (starting from 0) of the original Matrix4
+// if the indexes are outside the range of the matrix returns an error
+func (m *Matrix4) SubMatrix3(row, column int) (*Matrix3, error) {
+	if row > 3 || column > 3 || row < 0 || column < 0 {
+		return nil, fmt.Errorf("row and columns must be lower than 3 and greater than 0. Got row %s and column %s", fmt.Sprint(row), fmt.Sprint(column))
+	}
+	r := Matrix3{}
+	for i, ii := 0, 0; i < 3; i, ii = i+1, ii+1 {
+		if ii == row {
+			ii++
+		}
+		for j, jj := 0, 0; j < 3; j, jj = j+1, jj+1 {
+			if jj == column {
+				jj++
+			}
+			r.Values[i][j] = m.Values[ii][jj]
+		}
+	}
+	return &r, nil
 }
 
 // Equal returns true if the matrices are equal, else return false
