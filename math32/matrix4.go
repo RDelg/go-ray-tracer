@@ -12,7 +12,7 @@ type Matrix4 struct {
 
 // NewMatrix4Ones returns a pointer to a new Matrix4 full of 1s
 func NewMatrix4Ones() *Matrix4 {
-	oneVector := [4]float32{1.0, 1.0, 1.0, 1.0}
+	oneVector := [4]float32{1., 1., 1., 1.}
 	return &Matrix4{[4][4]float32{oneVector, oneVector, oneVector, oneVector}}
 }
 
@@ -25,10 +25,10 @@ func NewMatrix4Zeros() *Matrix4 {
 func NewMatrix4Identity() *Matrix4 {
 	return &Matrix4{
 		[4][4]float32{
-			[4]float32{1.0},
-			[4]float32{0.0, 1.0},
-			[4]float32{0.0, 0.0, 1.0},
-			[4]float32{0.0, 0.0, 0.0, 1.0},
+			[4]float32{1.},
+			[4]float32{0., 1.},
+			[4]float32{0., 0., 1.},
+			[4]float32{0., 0., 0., 1.},
 		}}
 }
 
@@ -153,7 +153,7 @@ func (m *Matrix4) Determinant() float32 {
 // Inverse returns the inverse of the matrix
 func (m *Matrix4) Inverse() (*Matrix4, error) {
 	det := m.Determinant()
-	if det == 0.0 {
+	if det == 0. {
 		return nil, errors.New("The matrix has 0 determinant. Inverse cannot be calculated")
 	}
 	r := m.Cofactor().Transpose().DivScalar(det)
@@ -166,7 +166,7 @@ func (m *Matrix4) Cofactor() *Matrix4 {
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
 			x, _ := m.SubMatrix3(i, j)
-			r.Values[i][j] = x.Determinant() * (1.0 + float32((-i-j)%2)*2.0)
+			r.Values[i][j] = x.Determinant() * (1. + float32((-i-j)%2)*2.)
 		}
 	}
 	return &r
