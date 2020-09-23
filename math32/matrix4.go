@@ -166,7 +166,7 @@ func (m *Matrix4) Cofactor() *Matrix4 {
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 4; j++ {
 			x, _ := m.SubMatrix3(i, j)
-			r.Values[i][j] = x.Determinant() * float32((-i-j)%2)
+			r.Values[i][j] = x.Determinant() * (1.0 + float32((-i-j)%2)*2.0)
 		}
 	}
 	return &r

@@ -510,3 +510,166 @@ func TestMatrix4_DivScalar(t *testing.T) {
 		})
 	}
 }
+
+func TestMatrix4_Inverse(t *testing.T) {
+	type fields struct {
+		Values [4][4]float32
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		want    *Matrix4
+		wantErr bool
+	}{
+		{"Inverse of identity equals identity", fields{NewMatrix4Identity().Values}, NewMatrix4Identity(), false},
+		{"Inverse of zero determinant matrix return error", fields{NewMatrix4Zeros().Values}, nil, true},
+		{
+			// https://matrixcalc.org/es/#%7B%7B1,2,2,6%7D,%7B2,3,1,2%7D,%7B3,1,6,3%7D,%7B4,4,2,1%7D%7D%5E%28-1%29
+			"Inverse of valid matrix return its inverse",
+			fields{
+				[4][4]float32{
+					[4]float32{1., 2., 2., 6.},
+					[4]float32{2., 3., 1., 2.},
+					[4]float32{3., 1., 6., 3.},
+					[4]float32{4., 4., 2., 1.},
+				}},
+			&Matrix4{
+				[4][4]float32{
+					[4]float32{11. / 15., -22. / 9., -16. / 45., 14. / 9.},
+					[4]float32{-3. / 5., 2., 1. / 5., -1.},
+					[4]float32{-7. / 15., 11. / 9., 17. / 45., -7. / 9.},
+					[4]float32{2. / 5., -2. / 3., -2. / 15., 1. / 3.},
+				}},
+			false},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &Matrix4{
+				Values: tt.fields.Values,
+			}
+			got, err := m.Inverse()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Matrix4.Inverse() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Matrix4.Inverse() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMatrix4_SubMatrix3(t *testing.T) {
+	type fields struct {
+		Values [4][4]float32
+	}
+	type args struct {
+		row    int
+		column int
+	}
+	tests := []struct {
+		name    string
+		fields  fields
+		args    args
+		want    *Matrix3
+		wantErr bool
+	}{
+		{"Submatrix of negative indexes returns error", fields{}, args{-1, 1}, nil, true},
+		{"Submatrix of greater than 3 indexes returns error", fields{}, args{0, 4}, nil, true},
+		{
+			"Submatrix runs correctly 01",
+			fields{
+				[4][4]float32{
+					[4]float32{0.1, 0.2, 0.3, 0.4},
+					[4]float32{0.5, 0.6, 0.7, 0.8},
+					[4]float32{0.9, 1.0, 1.1, 1.2},
+					[4]float32{1.3, 1.4, 1.5, 1.6},
+				}},
+			args{0, 0},
+			&Matrix3{
+				[3][3]float32{
+					[3]float32{0.6, 0.7, 0.8},
+					[3]float32{1.0, 1.1, 1.2},
+					[3]float32{1.4, 1.5, 1.6},
+				},
+			},
+			false,
+		},
+		{
+			"Submatrix runs correctly 02",
+			fields{
+				[4][4]float32{
+					[4]float32{0.1, 0.2, 0.3, 0.4},
+					[4]float32{0.5, 0.6, 0.7, 0.8},
+					[4]float32{0.9, 1.0, 1.1, 1.2},
+					[4]float32{1.3, 1.4, 1.5, 1.6},
+				}},
+			args{2, 2},
+			&Matrix3{
+				[3][3]float32{
+					[3]float32{0.1, 0.2, 0.4},
+					[3]float32{0.5, 0.6, 0.8},
+					[3]float32{1.3, 1.4, 1.6},
+				},
+			},
+			false,
+		},
+		{
+			"Submatrix runs correctly 03",
+			fields{
+				[4][4]float32{
+					[4]float32{0.1, 0.2, 0.3, 0.4},
+					[4]float32{0.5, 0.6, 0.7, 0.8},
+					[4]float32{0.9, 1.0, 1.1, 1.2},
+					[4]float32{1.3, 1.4, 1.5, 1.6},
+				}},
+			args{0, 3},
+			&Matrix3{
+				[3][3]float32{
+					[3]float32{0.5, 0.6, 0.7},
+					[3]float32{0.9, 1.0, 1.1},
+					[3]float32{1.3, 1.4, 1.5},
+				},
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &Matrix4{
+				Values: tt.fields.Values,
+			}
+			got, err := m.SubMatrix3(tt.args.row, tt.args.column)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Matrix4.SubMatrix3() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Matrix4.SubMatrix3() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMatrix4_Cofactor(t *testing.T) {
+	type fields struct {
+		Values [4][4]float32
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   *Matrix4
+	}{
+		{"Cofactor of identity equals identity", fields{NewMatrix4Identity().Values}, NewMatrix4Identity()},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &Matrix4{
+				Values: tt.fields.Values,
+			}
+			if got := m.Cofactor(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Matrix4.Cofactor() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
