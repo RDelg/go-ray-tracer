@@ -37,7 +37,10 @@ func (vector *Vector3) Neg() *Vector3 {
 // Add adds the values of other to vector
 // Returns a pointer to the updated vector
 func (vector *Vector3) Add(other *Vector3) *Vector3 {
-	return &Vector3{vector.X + other.X, vector.Y + other.Y, vector.Z + other.Z}
+	vector.X += other.X
+	vector.Y += other.Y
+	vector.Z += other.Z
+	return vector
 }
 
 // Substract substracts the values of other to vector
