@@ -313,9 +313,9 @@ func TestMatrix3_AddVector3(t *testing.T) {
 		want   *Matrix3
 	}{
 		{
-			"AddVector3 runs correctly with column wise false",
+			"AddVector3 runs correctly with column wise true",
 			fields{},
-			args{&Vector3{1.0, 2.0, 3.0}, false},
+			args{&Vector3{1.0, 2.0, 3.0}, true},
 			&Matrix3{[3][3]float32{
 				[3]float32{1.0, 2.0, 3.0},
 				[3]float32{1.0, 2.0, 3.0},
@@ -323,9 +323,9 @@ func TestMatrix3_AddVector3(t *testing.T) {
 			}},
 		},
 		{
-			"AddVector3 runs correctly with column wise true",
+			"AddVector3 runs correctly with column wise false",
 			fields{},
-			args{&Vector3{1.0, 2.0, 3.0}, true},
+			args{&Vector3{1.0, 2.0, 3.0}, false},
 			&Matrix3{[3][3]float32{
 				[3]float32{1.0, 1.0, 1.0},
 				[3]float32{2.0, 2.0, 2.0},
@@ -360,15 +360,15 @@ func TestMatrix3_MultVector3(t *testing.T) {
 		want   *Vector3
 	}{
 		{
-			"MultVector3 runs correctly with column wise false",
-			fields{NewMatrix3Ones().Values},
-			args{&Vector3{1.0, 2.0, 3.0}, false},
-			&Vector3{6.0, 6.0, 6.0},
-		},
-		{
 			"MultVector3 runs correctly with column wise true",
 			fields{NewMatrix3Ones().Values},
 			args{&Vector3{1.0, 2.0, 3.0}, true},
+			&Vector3{6.0, 6.0, 6.0},
+		},
+		{
+			"MultVector3 runs correctly with column wise false",
+			fields{NewMatrix3Ones().Values},
+			args{&Vector3{1.0, 2.0, 3.0}, false},
 			&Vector3{6.0, 6.0, 6.0},
 		},
 	}
@@ -379,6 +379,45 @@ func TestMatrix3_MultVector3(t *testing.T) {
 			}
 			if got := m.MultVector3(tt.args.vector, tt.args.columnWise); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Matrix3.MultVector3() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestMatrix3_MultPoint3(t *testing.T) {
+	type fields struct {
+		Values [3][3]float32
+	}
+	type args struct {
+		vector     *Point3
+		columnWise bool
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   *Point3
+	}{
+		{
+			"MultPoint3 runs correctly with column wise true",
+			fields{NewMatrix3Ones().Values},
+			args{&Point3{1.0, 2.0, 3.0}, true},
+			&Point3{6.0, 6.0, 6.0},
+		},
+		{
+			"MultPoint3 runs correctly with column wise false",
+			fields{NewMatrix3Ones().Values},
+			args{&Point3{1.0, 2.0, 3.0}, false},
+			&Point3{6.0, 6.0, 6.0},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			m := &Matrix3{
+				Values: tt.fields.Values,
+			}
+			if got := m.MultPoint3(tt.args.vector, tt.args.columnWise); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("Matrix3.MultPoint3() = %v, want %v", got, tt.want)
 			}
 		})
 	}

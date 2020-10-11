@@ -118,16 +118,6 @@ func (m *Matrix3) Equal(other *Matrix3) bool {
 func (m *Matrix3) AddVector3(vector *Vector3, columnWise bool) *Matrix3 {
 	if columnWise {
 		m.Values[0][0] = vector.X
-		m.Values[0][1] = vector.X
-		m.Values[0][2] = vector.X
-		m.Values[1][0] = vector.Y
-		m.Values[1][1] = vector.Y
-		m.Values[1][2] = vector.Y
-		m.Values[2][0] = vector.Z
-		m.Values[2][1] = vector.Z
-		m.Values[2][2] = vector.Z
-	} else {
-		m.Values[0][0] = vector.X
 		m.Values[1][0] = vector.X
 		m.Values[2][0] = vector.X
 		m.Values[0][1] = vector.Y
@@ -135,6 +125,16 @@ func (m *Matrix3) AddVector3(vector *Vector3, columnWise bool) *Matrix3 {
 		m.Values[2][1] = vector.Y
 		m.Values[0][2] = vector.Z
 		m.Values[1][2] = vector.Z
+		m.Values[2][2] = vector.Z
+	} else {
+		m.Values[0][0] = vector.X
+		m.Values[0][1] = vector.X
+		m.Values[0][2] = vector.X
+		m.Values[1][0] = vector.Y
+		m.Values[1][1] = vector.Y
+		m.Values[1][2] = vector.Y
+		m.Values[2][0] = vector.Z
+		m.Values[2][1] = vector.Z
 		m.Values[2][2] = vector.Z
 	}
 	return m
@@ -144,15 +144,30 @@ func (m *Matrix3) AddVector3(vector *Vector3, columnWise bool) *Matrix3 {
 func (m *Matrix3) MultVector3(vector *Vector3, columnWise bool) *Vector3 {
 	var x, y, z float32
 	if columnWise {
-		x = m.Values[0][0]*vector.X + m.Values[1][0]*vector.Y + m.Values[2][0]*vector.Z
-		y = m.Values[0][1]*vector.X + m.Values[1][1]*vector.Y + m.Values[2][1]*vector.Z
-		z = m.Values[0][2]*vector.X + m.Values[1][2]*vector.Y + m.Values[2][2]*vector.Z
-	} else {
 		x = m.Values[0][0]*vector.X + m.Values[0][1]*vector.Y + m.Values[0][2]*vector.Z
 		y = m.Values[1][0]*vector.X + m.Values[1][1]*vector.Y + m.Values[1][2]*vector.Z
 		z = m.Values[2][0]*vector.X + m.Values[2][1]*vector.Y + m.Values[2][2]*vector.Z
+	} else {
+		x = m.Values[0][0]*vector.X + m.Values[1][0]*vector.Y + m.Values[2][0]*vector.Z
+		y = m.Values[0][1]*vector.X + m.Values[1][1]*vector.Y + m.Values[2][1]*vector.Z
+		z = m.Values[0][2]*vector.X + m.Values[1][2]*vector.Y + m.Values[2][2]*vector.Z
 	}
 	return &Vector3{x, y, z}
+}
+
+// MultPoint3 multiplies each row with the vector
+func (m *Matrix3) MultPoint3(vector *Point3, columnWise bool) *Point3 {
+	var x, y, z float32
+	if columnWise {
+		x = m.Values[0][0]*vector.X + m.Values[0][1]*vector.Y + m.Values[0][2]*vector.Z
+		y = m.Values[1][0]*vector.X + m.Values[1][1]*vector.Y + m.Values[1][2]*vector.Z
+		z = m.Values[2][0]*vector.X + m.Values[2][1]*vector.Y + m.Values[2][2]*vector.Z
+	} else {
+		x = m.Values[0][0]*vector.X + m.Values[1][0]*vector.Y + m.Values[2][0]*vector.Z
+		y = m.Values[0][1]*vector.X + m.Values[1][1]*vector.Y + m.Values[2][1]*vector.Z
+		z = m.Values[0][2]*vector.X + m.Values[1][2]*vector.Y + m.Values[2][2]*vector.Z
+	}
+	return &Point3{x, y, z}
 }
 
 // AddScalar adds a scalar to each value of the matrix
