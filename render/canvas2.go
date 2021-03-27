@@ -1,6 +1,6 @@
 package render
 
-import "github.com/RDelg/go-ray-tracer/math32"
+import "go-ray-tracer/math32"
 
 // Canvas2 is a 2D canvas with width and height whH
 type Canvas2 struct {

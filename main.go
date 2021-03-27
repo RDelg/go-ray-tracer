@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/RDelg/go-ray-tracer/math32"
+	"go-ray-tracer/math32"
 )
 
 func main() {
