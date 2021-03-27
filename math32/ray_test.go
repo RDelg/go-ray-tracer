@@ -30,7 +30,55 @@ func TestRay_Intersect(t *testing.T) {
 				NewSphere(&Point3{0, 0, -0}, 1.0),
 			},
 			2,
-			[]float32{4.0, 2.0},
+			[]float32{4.0, 6.0},
+		},
+		{
+			"Intersect with tangent",
+			fields{
+				&Point3{0, 1, -5},
+				&Vector3{0, 0, 1},
+			},
+			args{
+				NewSphere(&Point3{0, 0, -0}, 1.0),
+			},
+			2,
+			[]float32{5., 5.},
+		},
+		{
+			"Not intersect",
+			fields{
+				&Point3{0, 2, -5},
+				&Vector3{0, 0, 1},
+			},
+			args{
+				NewSphere(&Point3{0, 0, -0}, 1.0),
+			},
+			0,
+			nil,
+		},
+		{
+			"From the center returns one negative time",
+			fields{
+				&Point3{0, 0, 0},
+				&Vector3{0, 0, 1},
+			},
+			args{
+				NewSphere(&Point3{0, 0, -0}, 1.0),
+			},
+			2,
+			[]float32{-1., 1.},
+		},
+		{
+			"Sphere behind the ray returns both times as negative",
+			fields{
+				&Point3{0, 0, 5},
+				&Vector3{0, 0, 1},
+			},
+			args{
+				NewSphere(&Point3{0, 0, -0}, 1.0),
+			},
+			2,
+			[]float32{-6., -4.},
 		},
 	}
 	for _, tt := range tests {
