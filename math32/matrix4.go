@@ -25,10 +25,10 @@ func NewMatrix4Zeros() *Matrix4 {
 func NewMatrix4Identity() *Matrix4 {
 	return &Matrix4{
 		[4][4]float32{
-			[4]float32{1.},
-			[4]float32{0., 1.},
-			[4]float32{0., 0., 1.},
-			[4]float32{0., 0., 0., 1.},
+			{1.},
+			{0., 1.},
+			{0., 0., 1.},
+			{0., 0., 0., 1.},
 		}}
 }
 
@@ -154,7 +154,7 @@ func (m *Matrix4) Determinant() float32 {
 func (m *Matrix4) Inverse() (*Matrix4, error) {
 	det := m.Determinant()
 	if det == 0. {
-		return nil, errors.New("The matrix has 0 determinant. Inverse cannot be calculated")
+		return nil, errors.New("the matrix has 0 determinant. inverse cannot be calculated")
 	}
 	r := m.Cofactor().Transpose().DivScalar(det)
 	return r, nil

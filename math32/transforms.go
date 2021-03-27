@@ -15,9 +15,9 @@ func sin32(r float32) float32 {
 func newScale3(x, y, z float32) *Matrix3 {
 	return &Matrix3{
 		[3][3]float32{
-			[3]float32{x, 0., 0.},
-			[3]float32{0., y, 0.},
-			[3]float32{0., 0., z},
+			{x, 0., 0.},
+			{0., y, 0.},
+			{0., 0., z},
 		}}
 }
 
@@ -26,9 +26,9 @@ func newScale3(x, y, z float32) *Matrix3 {
 func newRotateX3(r float32) *Matrix3 {
 	return &Matrix3{
 		[3][3]float32{
-			[3]float32{1., 0., 0.},
-			[3]float32{0., cos32(r), -sin32(r)},
-			[3]float32{0., sin32(r), cos32(r)},
+			{1., 0., 0.},
+			{0., cos32(r), -sin32(r)},
+			{0., sin32(r), cos32(r)},
 		}}
 }
 
@@ -37,9 +37,9 @@ func newRotateX3(r float32) *Matrix3 {
 func newRotateY3(r float32) *Matrix3 {
 	return &Matrix3{
 		[3][3]float32{
-			[3]float32{cos32(r), 0., sin32(r)},
-			[3]float32{0., 1., 0.},
-			[3]float32{-sin32(r), 0., cos32(r)},
+			{cos32(r), 0., sin32(r)},
+			{0., 1., 0.},
+			{-sin32(r), 0., cos32(r)},
 		}}
 }
 
@@ -48,9 +48,9 @@ func newRotateY3(r float32) *Matrix3 {
 func newRotateZ3(r float32) *Matrix3 {
 	return &Matrix3{
 		[3][3]float32{
-			[3]float32{cos32(r), -sin32(r), 0.},
-			[3]float32{-sin32(r), cos32(r), 0.},
-			[3]float32{0., 0., 1.},
+			{cos32(r), -sin32(r), 0.},
+			{-sin32(r), cos32(r), 0.},
+			{0., 0., 1.},
 		}}
 }
 
@@ -59,9 +59,9 @@ func newRotateZ3(r float32) *Matrix3 {
 func newShear3(xy, xz, yx, yz, zx, zy float32) *Matrix3 {
 	return &Matrix3{
 		[3][3]float32{
-			[3]float32{1., xy, xz},
-			[3]float32{yz, 1., yz},
-			[3]float32{zx, zy, 1.},
+			{1., xy, xz},
+			{yz, 1., yz},
+			{zx, zy, 1.},
 		}}
 }
 

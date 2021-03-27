@@ -13,9 +13,9 @@ func TestNewMatrix3Ones(t *testing.T) {
 		{
 			"Return a new Matrix3 full of 1s",
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 1.0, 1.0},
-				[3]float32{1.0, 1.0, 1.0},
-				[3]float32{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
 			}},
 		},
 	}
@@ -36,9 +36,9 @@ func TestNewMatrix3Zeros(t *testing.T) {
 		{
 			"Return a new Matrix3 full of 0s",
 			&Matrix3{[3][3]float32{
-				[3]float32{0.0, 0.0, 0.0},
-				[3]float32{0.0, 0.0, 0.0},
-				[3]float32{0.0, 0.0, 0.0},
+				{0.0, 0.0, 0.0},
+				{0.0, 0.0, 0.0},
+				{0.0, 0.0, 0.0},
 			}},
 		},
 	}
@@ -59,9 +59,9 @@ func TestNewMatrix3Identity(t *testing.T) {
 		{
 			"Return the identity matrix",
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 0.0, 0.0},
-				[3]float32{0.0, 1.0, 0.0},
-				[3]float32{0.0, 0.0, 1.0},
+				{1.0, 0.0, 0.0},
+				{0.0, 1.0, 0.0},
+				{0.0, 0.0, 1.0},
 			}},
 		},
 	}
@@ -92,14 +92,14 @@ func TestMatrix3_Add(t *testing.T) {
 			fields{},
 			args{
 				&Matrix3{[3][3]float32{
-					[3]float32{1.0, 0.0, 0.0},
-					[3]float32{0.0, 1.0, 0.0},
-					[3]float32{0.0, 0.0, 1.0},
+					{1.0, 0.0, 0.0},
+					{0.0, 1.0, 0.0},
+					{0.0, 0.0, 1.0},
 				}}},
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 0.0, 0.0},
-				[3]float32{0.0, 1.0, 0.0},
-				[3]float32{0.0, 0.0, 1.0},
+				{1.0, 0.0, 0.0},
+				{0.0, 1.0, 0.0},
+				{0.0, 0.0, 1.0},
 			}},
 		},
 	}
@@ -133,14 +133,14 @@ func TestMatrix3_Mult(t *testing.T) {
 			fields{NewMatrix3Ones().Values},
 			args{
 				&Matrix3{[3][3]float32{
-					[3]float32{1.0, 0.0, 0.0},
-					[3]float32{0.0, 1.0, 0.0},
-					[3]float32{0.0, 0.0, 1.0},
+					{1.0, 0.0, 0.0},
+					{0.0, 1.0, 0.0},
+					{0.0, 0.0, 1.0},
 				}}},
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 1.0, 1.0},
-				[3]float32{1.0, 1.0, 1.0},
-				[3]float32{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
+				{1.0, 1.0, 1.0},
 			}},
 		},
 	}
@@ -169,24 +169,24 @@ func TestMatrix3_Transpose(t *testing.T) {
 			"Transpose of identity returns identity",
 			fields{NewMatrix3Identity().Values},
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 0.0, 0.0},
-				[3]float32{0.0, 1.0, 0.0},
-				[3]float32{0.0, 0.0, 1.0},
+				{1.0, 0.0, 0.0},
+				{0.0, 1.0, 0.0},
+				{0.0, 0.0, 1.0},
 			}},
 		},
 		{
 			"Transpose runs correctly",
 			fields{
 				[3][3]float32{
-					[3]float32{1.0, -1.0, 2.0},
-					[3]float32{1.0, 1.0, 6.0},
-					[3]float32{3.0, 4.0, 1.0},
+					{1.0, -1.0, 2.0},
+					{1.0, 1.0, 6.0},
+					{3.0, 4.0, 1.0},
 				},
 			},
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 1.0, 3.0},
-				[3]float32{-1.0, 1.0, 4.0},
-				[3]float32{2.0, 6.0, 1.0},
+				{1.0, 1.0, 3.0},
+				{-1.0, 1.0, 4.0},
+				{2.0, 6.0, 1.0},
 			}},
 		},
 	}
@@ -220,9 +220,9 @@ func TestMatrix3_Determinant(t *testing.T) {
 			"Determinannt of runs correctly",
 			fields{
 				[3][3]float32{
-					[3]float32{1.0, -1.0, 2.0},
-					[3]float32{1.0, 1.0, 6.0},
-					[3]float32{3.0, 4.0, 1.0},
+					{1.0, -1.0, 2.0},
+					{1.0, 1.0, 6.0},
+					{3.0, 4.0, 1.0},
 				},
 			},
 			-38.0,
@@ -257,15 +257,15 @@ func TestMatrix3_Equal(t *testing.T) {
 			"Equal returns true",
 			fields{
 				[3][3]float32{
-					[3]float32{1.0, -1.0, 2.0},
-					[3]float32{1.0, 1.0, 6.0},
-					[3]float32{3.0, 4.0, 1.0},
+					{1.0, -1.0, 2.0},
+					{1.0, 1.0, 6.0},
+					{3.0, 4.0, 1.0},
 				},
 			},
 			args{&Matrix3{[3][3]float32{
-				[3]float32{1.0, -1.0, 2.0},
-				[3]float32{1.0, 1.0, 6.0},
-				[3]float32{3.0, 4.0, 1.0},
+				{1.0, -1.0, 2.0},
+				{1.0, 1.0, 6.0},
+				{3.0, 4.0, 1.0},
 			}}},
 			true,
 		},
@@ -273,15 +273,15 @@ func TestMatrix3_Equal(t *testing.T) {
 			"Equal returns False",
 			fields{
 				[3][3]float32{
-					[3]float32{1.0, -1.0, 2.0},
-					[3]float32{1.0, 1.0, 9.0},
-					[3]float32{3.0, 4.0, 1.0},
+					{1.0, -1.0, 2.0},
+					{1.0, 1.0, 9.0},
+					{3.0, 4.0, 1.0},
 				},
 			},
 			args{&Matrix3{[3][3]float32{
-				[3]float32{1.0, 1.0, 3.0},
-				[3]float32{-1.0, 1.0, 4.0},
-				[3]float32{2.0, 6.0, 1.0},
+				{1.0, 1.0, 3.0},
+				{-1.0, 1.0, 4.0},
+				{2.0, 6.0, 1.0},
 			}}},
 			false,
 		},
@@ -317,9 +317,9 @@ func TestMatrix3_AddVector3(t *testing.T) {
 			fields{},
 			args{&Vector3{1.0, 2.0, 3.0}, true},
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 2.0, 3.0},
-				[3]float32{1.0, 2.0, 3.0},
-				[3]float32{1.0, 2.0, 3.0},
+				{1.0, 2.0, 3.0},
+				{1.0, 2.0, 3.0},
+				{1.0, 2.0, 3.0},
 			}},
 		},
 		{
@@ -327,9 +327,9 @@ func TestMatrix3_AddVector3(t *testing.T) {
 			fields{},
 			args{&Vector3{1.0, 2.0, 3.0}, false},
 			&Matrix3{[3][3]float32{
-				[3]float32{1.0, 1.0, 1.0},
-				[3]float32{2.0, 2.0, 2.0},
-				[3]float32{3.0, 3.0, 3.0},
+				{1.0, 1.0, 1.0},
+				{2.0, 2.0, 2.0},
+				{3.0, 3.0, 3.0},
 			}},
 		},
 	}
@@ -441,9 +441,9 @@ func TestMatrix3_AddScalar(t *testing.T) {
 			fields{NewMatrix3Ones().Values},
 			args{2.0},
 			&Matrix3{[3][3]float32{
-				[3]float32{3.0, 3.0, 3.0},
-				[3]float32{3.0, 3.0, 3.0},
-				[3]float32{3.0, 3.0, 3.0},
+				{3.0, 3.0, 3.0},
+				{3.0, 3.0, 3.0},
+				{3.0, 3.0, 3.0},
 			}},
 		},
 	}
@@ -477,9 +477,9 @@ func TestMatrix3_MultScalar(t *testing.T) {
 			fields{NewMatrix3Ones().Values},
 			args{2.0},
 			&Matrix3{[3][3]float32{
-				[3]float32{2.0, 2.0, 2.0},
-				[3]float32{2.0, 2.0, 2.0},
-				[3]float32{2.0, 2.0, 2.0},
+				{2.0, 2.0, 2.0},
+				{2.0, 2.0, 2.0},
+				{2.0, 2.0, 2.0},
 			}},
 		},
 	}
@@ -513,9 +513,9 @@ func TestMatrix3_DivScalar(t *testing.T) {
 			fields{NewMatrix3Ones().Values},
 			args{2.0},
 			&Matrix3{[3][3]float32{
-				[3]float32{0.5, 0.5, 0.5},
-				[3]float32{0.5, 0.5, 0.5},
-				[3]float32{0.5, 0.5, 0.5},
+				{0.5, 0.5, 0.5},
+				{0.5, 0.5, 0.5},
+				{0.5, 0.5, 0.5},
 			}},
 		}}
 	for _, tt := range tests {

@@ -20,9 +20,9 @@ func NewMatrix3Zeros() *Matrix3 {
 func NewMatrix3Identity() *Matrix3 {
 	return &Matrix3{
 		[3][3]float32{
-			[3]float32{1.0, 0.0, 0.0},
-			[3]float32{0.0, 1.0, 0.0},
-			[3]float32{0.0, 0.0, 1.0},
+			{1.0, 0.0, 0.0},
+			{0.0, 1.0, 0.0},
+			{0.0, 0.0, 1.0},
 		}}
 }
 
