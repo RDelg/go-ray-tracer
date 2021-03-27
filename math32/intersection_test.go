@@ -50,7 +50,7 @@ func TestIntersections_Add(t *testing.T) {
 				[]Intersection{},
 			},
 			args{&Intersection{}},
-			&Intersections{1, []Intersection{{}}},
+			&Intersections{11, []Intersection{{}}},
 		},
 	}
 	for _, tt := range tests {
