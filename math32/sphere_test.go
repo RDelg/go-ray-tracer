@@ -108,3 +108,28 @@ func TestSphere_Intersect(t *testing.T) {
 		})
 	}
 }
+
+func TestNewSphere(t *testing.T) {
+	type args struct {
+		center *Point3
+		radius float32
+	}
+	tests := []struct {
+		name string
+		args args
+		want *Sphere
+	}{
+		{
+			"Runs corretly",
+			args{&Point3{0., 0., 0.}, 1.},
+			&Sphere{&Point3{0., 0., 0.}, 1.},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewSphere(tt.args.center, tt.args.radius); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewSphere() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
